@@ -31,6 +31,7 @@ func SetupDatabase() {
 		&entity.Room{},
 		&entity.Patient{},
 		&entity.PatientRoom{},
+		&entity.BookRoom{},
 	)
 
 	// ตัวอย่างข้อมูลสำหรับ TypeRoom
@@ -138,5 +139,21 @@ func SetupDatabase() {
 	db.FirstOrCreate(&PatientRoom01,entity.PatientRoom{PatientID :Patient01.ID,})
 	db.FirstOrCreate(&PatientRoom02,entity.PatientRoom{PatientID :Patient02.ID,})
 
-	fmt.Println("Database setup completed with sample data.")
+	BookRoom01 := entity.BookRoom{
+		BuildingID: buildingA.ID,
+		RoomID: PatientRoom01.ID,
+		PositionX: 1,
+		PositionY: 1,
+	}
+	BookRoom02 := entity.BookRoom{
+		BuildingID: buildingA.ID,
+		RoomID: PatientRoom02.ID,
+		PositionX: 1,
+		PositionY: 2,
+	}
+	db.FirstOrCreate(&BookRoom01,entity.BookRoom{RoomID: PatientRoom01.ID})
+	db.FirstOrCreate(&BookRoom02,entity.BookRoom{RoomID: PatientRoom02.ID})
+
+
+	fmt.Println("Database setup completed.")
 }

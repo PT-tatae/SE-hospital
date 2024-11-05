@@ -21,5 +21,7 @@ type Room struct {
     BedCapacity int    `json:"bed_capacity"`
 
     PatientRoom []PatientRoom `gorm:"foreignKey:RoomID"`
+    
+    BookRoom BookRoom `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 }
 
