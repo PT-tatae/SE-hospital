@@ -6,10 +6,7 @@ type Floor struct {
 
 	gorm.Model
 
-    BuildingID uint   `json:"building_id"` 
-	Building	   Building `gorm:"foreignKey:BuildingID"`	
-
-    Number     int    `json:"number"`
+    FloorNumber     string    `json:"floor_number"`
 
 	Room []Room `gorm:"foreignKey:FloorID"`
 }

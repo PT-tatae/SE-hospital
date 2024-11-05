@@ -11,11 +11,15 @@ type Room struct {
     RoomTypeID  uint   
 	RoomType  RoomType `gorm:"foreignKey: RoomTypeID"`
 
-    Status      string `json:"status"`
 
     FloorID     uint   
     Floor Floor    `gorm:"foreignKey:FloorID"`
 
+    BuildingID    uint
+    Building    Building `gorm:"foreignKey:BuildingID"`
+
     BedCapacity int    `json:"bed_capacity"`
+
+    PatientRoom []PatientRoom `gorm:"foreignKey:RoomID"`
 }
 
