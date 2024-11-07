@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Layout, Card } from "antd";
 import { RoomLayout } from "../../../interface/room";
 //import "./room.css";
-import SiderFloor from "./sider"
+import SiderFloor from "../sider"
 
 const { Sider,Content } = Layout; 
 

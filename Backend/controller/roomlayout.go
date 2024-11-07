@@ -8,7 +8,7 @@ import (
 )
 
 type (
-    BookRoomResult struct{
+    RoomLayoutResult struct{
         RoomLayoutID	uint `json:"room_layout_id"`
     
         // BuildingName  string `json:"building_name"`
@@ -37,8 +37,8 @@ type (
 )
 
 
-func GetBookRoom(c *gin.Context) {
-    var results []BookRoomResult
+func GetRoomLayout(c *gin.Context) {
+    var results []RoomLayoutResult
     buildingInput := c.Query("building_name")
     floorInput := c.Query("floor_number")
 
