@@ -37,12 +37,16 @@ func SetupDatabase() {
 	// ตัวอย่างข้อมูลสำหรับ TypeRoom
 	singleRoom := entity.RoomType{
 		RoomName: "ห้อง ICU",
+		PricePerNight: 3000.00,
 	}
 	doubleRoom := entity.RoomType{
 		RoomName: "ห้องเดี่ยว",
+		PricePerNight: 10000.00,
+		
 	}
 	suiteRoom := entity.RoomType{
 		RoomName: "ห้องรวม",
+		PricePerNight: 15000.00,
 	}
 	db.FirstOrCreate(&singleRoom,entity.RoomType{RoomName: "ห้อง ICU"})
     db.FirstOrCreate(&doubleRoom,entity.RoomType{RoomName: "ห้องเดี่ยว"})
