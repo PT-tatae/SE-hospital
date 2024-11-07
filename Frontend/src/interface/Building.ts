@@ -1,3 +1,3 @@
 export interface BuildingInterFace {
-    BuildingName?: string
+    BuildingName: string
 }

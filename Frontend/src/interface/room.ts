@@ -6,5 +6,4 @@ export interface Room {
     status?: string;
 }
 
-// กำหนดประเภทของ roomLayout เป็นอาร์เรย์ 2 มิติของ Room หรือ null
-export type RoomLayout = (Room | null)[][];
+

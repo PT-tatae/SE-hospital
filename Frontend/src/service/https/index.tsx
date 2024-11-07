@@ -1,7 +1,5 @@
 import axios from "axios";
 
-import { RoomLayoutInterface } from "../../interface/bookroom";
-import { FloorInterFace } from "../../interface/Floor";
 
 const apiUrl = "http://localhost:8000";
 
@@ -11,25 +9,35 @@ const requestOptions = {
     },
 };
 
-async function GetRoomLayout(data: RoomLayoutInterface) {
+async function GetRoomLayout(buildingName: string, floorNumber: string) {
     return await axios
-      .post(`${apiUrl}/RoomLayout`, data, requestOptions)
-      .then((res) => res)
-      .catch((e) => e.response);
+        .get(`${apiUrl}/RoomLayout?building_name=${buildingName}&floor_number=${floorNumber}`, requestOptions) 
+        .then((res) => res)
+        .catch((e) => {
+            console.error("API error:", e.response);  // ดูข้อมูลข้อผิดพลาดที่มาจาก API
+            return e.response;
+        });
 }
 
-async function GetFloor(data: FloorInterFace) {
+
+async function GetFloor() {
     return await axios
-      .post(`${apiUrl}/floor`, data, requestOptions)
+      .get(`${apiUrl}/floor`, requestOptions)
       .then((res) => res)
-      .catch((e) => e.response);
+      .catch((e) => {
+        console.error("API error:", e.response);  // ดูข้อมูลข้อผิดพลาดที่มาจาก API
+        return e.response;
+    });
 }
 
-async function GetBuilding(data: FloorInterFace) {
+async function GetBuilding() {
     return await axios
-      .post(`${apiUrl}/building`, data, requestOptions)
+      .get(`${apiUrl}/building`, requestOptions)
       .then((res) => res)
-      .catch((e) => e.response);
+      .catch((e) => {
+        console.error("API error:", e.response);  // ดูข้อมูลข้อผิดพลาดที่มาจาก API
+        return e.response;
+    });
 }
 
 export{
