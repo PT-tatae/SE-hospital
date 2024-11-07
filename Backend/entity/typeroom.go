@@ -8,5 +8,7 @@ type RoomType struct {
 
     RoomName string `json:"room_name"`
 
+    PricePerNight float32 `json:"price_per_night"`
+
     Room []Room `gorm:"foreignKey: RoomTypeID"`
 }
