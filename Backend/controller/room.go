@@ -26,7 +26,7 @@ type BookRoomResult struct{
 
 func GetBookRoom(c *gin.Context) {
     var results []BookRoomResult
-    buildingInput := c.Param("building_name")
+    buildingInput := c.Param("building_name") 
 
     db := config.DB()
 
@@ -56,7 +56,7 @@ func GetBookRoom(c *gin.Context) {
     // ตรวจสอบว่าพบข้อมูลหรือไม่
     if len(results) == 0 {
         c.JSON(http.StatusNotFound, gin.H{
-            "error": "no book room found",
+            "error": "ไม่พบห้อง",
         })
         return
     }
