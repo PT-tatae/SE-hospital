@@ -1,0 +1,24 @@
+.body {
+    display: grid;
+    grid-template-columns: 30% 100%; /* กำหนดความกว้างของคอลัมน์ */
+    max-width: auto; /* ให้ใช้ความกว้างทั้งหมด */
+    height: 100vh; /* ให้ความสูงของ body ใช้เต็มหน้าจอ */
+}
+
+.siderfloor {
+    border: solid 1px red;  
+    padding: 10px;          
+    background-color: #f8f8f8;  
+    height: auto; 
+    width: 100%;
+}
+
+.Content {
+    border: solid 1px blue;  /* กำหนดกรอบให้กับคอลัมน์ที่สอง */
+    padding: 10px;            /* เพิ่ม padding */
+    background-color: #e0e0e0;  /* กำหนดสีพื้นหลัง */
+    height: 100%; /* ใช้ความสูงเต็มหน้าจอ */
+    width: 1000px;
+    display: table-column;
+    
+}

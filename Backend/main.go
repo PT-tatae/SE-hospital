@@ -19,7 +19,7 @@ func main() {
 	r := gin.Default()
 
 	// Define routes
-	r.GET("/bookroom/:building_name", controller.GetBookRoom)
+	r.GET("/bookroom", controller.GetBookRoom)
 	r.GET("/floor", controller.GetFloor)
 	r.GET("/building", controller.GetBuilding)
 

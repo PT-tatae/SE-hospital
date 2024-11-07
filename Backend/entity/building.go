@@ -6,5 +6,5 @@ type Building struct {
     gorm.Model
     BuildingName  string `json:"building_name"`
     Location      string `json:"location"`
-    BookRoom []BookRoom `gorm:"foreignKey:BuildingID"`
+    RoomLayout []RoomLayout `gorm:"foreignKey:BuildingID"`
 }

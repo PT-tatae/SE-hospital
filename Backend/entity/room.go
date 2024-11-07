@@ -22,6 +22,6 @@ type Room struct {
 
     PatientRoom []PatientRoom `gorm:"foreignKey:RoomID"`
     
-    BookRoom BookRoom `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
+    RoomLayout RoomLayout `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 }
 

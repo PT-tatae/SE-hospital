@@ -3,7 +3,7 @@ import (
 	"gorm.io/gorm"
 )
 
-type BookRoom struct{
+type RoomLayout struct{
 	gorm.Model
 	BuildingID uint
 	Building Building `json:"BuildingID"`
