@@ -25,6 +25,7 @@ func main() {
 
 	r.POST("/AddFloor",controller.AddFloor)
 	r.POST("/AddBuilding",controller.AddBuilding)
+	r.POST("/AddRoom",controller.AddRoom)
 
 	// Start server
 	r.Run(":" + PORT)
