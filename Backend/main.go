@@ -20,6 +20,11 @@ func main() {
 
 	// Define routes
 	r.GET("/bookroom/:building_name", controller.GetBookRoom)
+	r.GET("/floor", controller.GetFloor)
+	r.GET("/building", controller.GetBuilding)
+
+	r.POST("/AddFloor",controller.AddFloor)
+	r.POST("/AddBuilding",controller.AddBuilding)
 
 	// Start server
 	r.Run(":" + PORT)
