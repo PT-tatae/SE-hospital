@@ -21,7 +21,7 @@ const SiderFloor: React.FC<SiderFloorProps> = ({ floors, building, onFloorSelect
         onClick={(item) => onFloorSelect(building, item.key)} // ส่ง floorNumber เป็น string
       >
         {Array.isArray(floors) && floors.map((floor) => (
-          <Menu.Item key={floor.floor_number.toString()}>
+          <Menu.Item key={floor.floor_number}>
             {`ชั้นที่ ${floor.floor_number}`}
           </Menu.Item>
         ))}

@@ -73,18 +73,18 @@ export default function LayoutRoom() {
   useEffect(() => {
     fetchFloorData();
     fetchBuildingData();
+    //fetchRoomsByFloor("อาคาร A","1");
   }, []);
 
   const fetchRoomsByFloor = async (
     buildingName: string,
-    floorNumber: string
+    floorNumber: string,
   ) => {
     try {
-      // ส่งพารามิเตอร์ทั้งสองให้กับ GetRoomLayout
       const response = await GetRoomLayout(buildingName, floorNumber);
-      if (response && response.data) {
-        setDataApiRoomLayout(response.data.rooms);
-        console.log("roomLayout", roomLayout);
+      if (response && response.data && Array.isArray(response.data.data)) {
+        setDataApiRoomLayout(response.data.data); // Access response.data.data
+        console.log("roomLayout", response.data.data);
       } else {
         message.error("ไม่สามารถดึงข้อมูลห้องได้");
       }
@@ -93,6 +93,7 @@ export default function LayoutRoom() {
       console.error(error);
     }
   };
+  
 
   return (
     <Layout style={{ minHeight: "100vh" }}>
