@@ -11,14 +11,13 @@ type Room struct {
     RoomTypeID  uint   
 	RoomType  RoomType `gorm:"foreignKey: RoomTypeID"`
 
-
-    FloorID     uint   
-    Floor Floor    `gorm:"foreignKey:FloorID"`
-
-    BuildingID    uint
-    Building    Building `gorm:"foreignKey:BuildingID"`
-
     BedCapacity int    `json:"bed_capacity"`
+
+    DepartmentID uint
+    Department Department `gorm:"foreignKey:DepartmentID"`
+
+    EmployeeID uint
+    Employee Employee `gorm:"foreignKey:EmployeeID"`
 
     PatientRoom []PatientRoom `gorm:"foreignKey:RoomID"`
     

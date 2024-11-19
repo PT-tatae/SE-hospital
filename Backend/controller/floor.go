@@ -10,6 +10,10 @@ type (
 	Floor struct{
 		FloorNumber string `json:"floor_number"`
 	};
+    inputFloor struct{
+		FloorNumber string `json:"floor_number"`
+        BuildingID uint `json:"building_id"`
+	};
 )
 	
 
@@ -19,10 +23,8 @@ func GetFloor(c *gin.Context) {
 
     db := config.DB()
     query := db.Model(&entity.Floor{}).
-        Select("DISTINCT floors.floor_number AS floor_number").
-        Joins("LEFT JOIN rooms ON rooms.floor_id = floors.id").
-        Joins("LEFT JOIN room_layouts ON room_layouts.room_id = rooms.id").
-        Joins("LEFT JOIN buildings ON room_layouts.building_id = buildings.id")
+        Select("floors.floor_number AS floor_number").
+        Joins("INNER JOIN buildings ON floors.building_id = buildings.id")
 
     if buildingName != "" {
         query = query.Where("buildings.building_name LIKE ?", buildingName)
@@ -48,17 +50,20 @@ func GetFloor(c *gin.Context) {
 
 
 func AddFloor(c *gin.Context) {
-    floorNumberInput := c.Param("floor_number")
-    var floor entity.Floor
+    var input inputFloor
 
     // ผูกข้อมูล JSON เข้ากับโครงสร้าง Floor
-    if err := c.ShouldBindJSON(&floor); err != nil {
+    if err := c.ShouldBindJSON(&input); err != nil {
         c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
         return
     }
 
-    // ตรวจสอบและเพิ่มข้อมูลด้วย FirstOrCreate
-    result := config.DB().Where("floor_number = ?", floorNumberInput).FirstOrCreate(&floor)
+    floor := entity.Floor{
+        FloorNumber: input.FloorNumber,
+        BuildingID:  input.BuildingID,
+    }
+
+    result := config.DB().Where("floor_number = ? AND building_id = ?", input.FloorNumber, input.BuildingID).FirstOrCreate(&floor)
 
     // ตรวจสอบว่าการเพิ่มข้อมูลมีปัญหาหรือไม่
     if result.Error != nil {
@@ -66,5 +71,5 @@ func AddFloor(c *gin.Context) {
         return
     }
 
-    c.JSON(http.StatusOK, gin.H{"message": "เพิ่มสำเร็จ"})
+    c.JSON(http.StatusOK, gin.H{"message": "เพิ่มสำเร็จ", "floor": floor})
 }

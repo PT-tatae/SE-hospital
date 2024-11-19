@@ -365,44 +365,44 @@ db.Model(&EmployeePharmacy).Association("Diseases").Append(DiseasesPharmacy)
     db.FirstOrCreate(&buildingB,entity.Building{BuildingName: "อาคาร B"})
 
 	// ตัวอย่างข้อมูลสำหรับ Floor
-	floor1 := entity.Floor{
+	floor1BA := entity.Floor{
 		FloorNumber:     "1",
+		BuildingID: buildingA.ID,
 	}
-	floor2 := entity.Floor{
+	floor2BA := entity.Floor{
 		FloorNumber:     "2",
+		BuildingID: buildingA.ID,
 	}
-	floor3 := entity.Floor{
-		FloorNumber:     "3",
+	floor1BB := entity.Floor{
+		FloorNumber:     "1",
+		BuildingID: buildingB.ID,
 	}
-	db.FirstOrCreate(&floor1,entity.Floor{FloorNumber: "1"})
-    db.FirstOrCreate(&floor2,entity.Floor{FloorNumber: "2"})
-	db.FirstOrCreate(&floor3,entity.Floor{FloorNumber: "3"})
+	db.FirstOrCreate(&floor1BA,entity.Floor{FloorNumber: "1"})
+    db.FirstOrCreate(&floor2BA,entity.Floor{FloorNumber: "2"})
+	db.FirstOrCreate(&floor1BB,entity.Floor{FloorNumber: "1",BuildingID: buildingB.ID})
 
 	// ตัวอย่างข้อมูลสำหรับ Room
 	room101 := entity.Room{
 		RoomNumber:  "101",
 		RoomTypeID:  singleRoom.ID,
 		//Status:      "Available",
-		FloorID:     floor1.ID,
-		BuildingID:	buildingA.ID,
 		BedCapacity: 1,
+		EmployeeID: EmployeeNurseCounter.ID,
 
 	}
 	room102 := entity.Room{
 		RoomNumber:  "102",
 		RoomTypeID:  doubleRoom.ID,
 		//Status:      "Occupied",
-		FloorID:     floor1.ID,
-		BuildingID:	buildingA.ID,
 		BedCapacity: 2,
+		EmployeeID: EmployeeNurseCounter.ID,
 	}
 	room201 := entity.Room{
 		RoomNumber:  "201",
 		RoomTypeID:  suiteRoom.ID,
 		//Status:      "Available",
-		FloorID:     floor2.ID,
-		BuildingID:	buildingB.ID,
 		BedCapacity: 3,
+		EmployeeID: EmployeeNurseCounter.ID,
 	}
 	db.FirstOrCreate(&room101,entity.Room{RoomNumber: "101"})
     db.FirstOrCreate(&room102,entity.Room{RoomNumber: "102"})

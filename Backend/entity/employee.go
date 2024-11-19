@@ -42,4 +42,6 @@ type Employee struct {
 
 	Profile  string `json:"profile" gorm:"type:longtext"`
 	Password string `json:"password"`
+
+	Room []Room `gorm:"foreignKey:EmployeeID"`
 }

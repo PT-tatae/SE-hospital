@@ -57,10 +57,11 @@ func GetRoomLayout(c *gin.Context) {
             room_layouts.position_y,
             floors.floor_number
         `).
-        Joins("LEFT JOIN buildings ON room_layouts.building_id = buildings.id").
-        Joins("LEFT JOIN rooms ON room_layouts.room_id = rooms.id").
-        Joins("LEFT JOIN room_types ON rooms.room_type_id = room_types.id").
-        Joins("LEFT JOIN floors ON rooms.floor_id = floors.id")
+        Joins("INNER JOIN buildings ON floors.building_id = buildings.id").
+        Joins("INNER JOIN floors ON room_layouts.floors_id = floors.id").
+		Joins("INNER JOIN rooms ON room_layouts.rooms_id = rooms.id").
+        Joins("INNER JOIN room_types ON rooms.room_type_id = room_types.id")
+        
 
     // เพิ่มเงื่อนไขการค้นหาด้วย building_name และ floor_number (ถ้า floor_number มีค่า)
     if buildingInput != "" {
@@ -135,9 +136,10 @@ func AddRoom(c *gin.Context) {
 	room := entity.Room{
 		RoomNumber:  roomData.RoomNumber,
 		RoomTypeID:  roomType.ID, // ผูกกับ RoomType
-		FloorID:     floor.ID,    // ผูกกับ Floor
-		BuildingID:  building.ID, // ผูกกับ Building
 		BedCapacity: roomData.BedCapacity,
+		DepartmentID: 1,
+		EmployeeID: 1,
+
 	}
 
     if err := tx.Create(&room).Error; err != nil {
@@ -174,6 +176,7 @@ if err := tx.Joins("JOIN rooms ON rooms.id = room_layouts.room_id").
 	// สร้างข้อมูล RoomLayout
 	roomLayout := entity.RoomLayout{
 		BuildingID: building.ID,
+		FloorID: floor.ID,
 		RoomID:     room.ID,
 		PositionX:  roomData.PositionX,
 		PositionY:  roomData.PositionY,

@@ -8,5 +8,8 @@ type Floor struct {
 
     FloorNumber     string    `json:"floor_number"`
 
-	Room []Room `gorm:"foreignKey:FloorID"`
+	BuildingID uint
+	Building Building `gorm:"foreignKey:BuildingID"`
+
+	RoomLayout []RoomLayout `gorm:"foreignKey:FloorID"`
 }
