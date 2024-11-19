@@ -2,9 +2,12 @@ package controller
 
 import (
     "net/http"
+	"errors"
     "github.com/sut67/team04/config"
     "github.com/sut67/team04/entity"
     "github.com/gin-gonic/gin"
+	"gorm.io/gorm"
+
 )
 
 type (
@@ -76,7 +79,7 @@ func GetRoomLayout(c *gin.Context) {
 
     if len(results) == 0 {
         c.JSON(http.StatusNotFound, gin.H{
-            "error": "ไม่พบห้อง",
+            "error": "ไม่พบข้อมูลผังห้องห้อง",
         })
         return
     }
@@ -144,6 +147,29 @@ func AddRoom(c *gin.Context) {
 		})
 		return
 	}
+
+// ตรวจสอบว่ามีข้อมูลในตำแหน่งที่ต้องการอยู่แล้วหรือไม่
+var existingRoomLayout entity.RoomLayout
+if err := tx.Joins("JOIN rooms ON rooms.id = room_layouts.room_id").
+    Where("room_layouts.building_id = ? AND rooms.floor_id = ? AND room_layouts.position_x = ? AND room_layouts.position_y = ?",
+        building.ID, floor.ID, roomData.PositionX, roomData.PositionY).
+    First(&existingRoomLayout).Error; err == nil {
+    // หากมีข้อมูลในตำแหน่งนี้อยู่แล้ว ให้แสดงข้อความหรือจัดการตามที่ต้องการ
+    tx.Rollback()
+    c.JSON(http.StatusBadRequest, gin.H{
+        "error": "มีห้องในตำแหน่งนี้อยู่แล้ว กรุณาเลือกตำแหน่งใหม่",
+    })
+    return
+} else if !errors.Is(err, gorm.ErrRecordNotFound) {
+    // กรณีมีข้อผิดพลาดในการค้นหาอื่นๆ ให้ส่ง error กลับไป
+    tx.Rollback()
+    c.JSON(http.StatusInternalServerError, gin.H{
+        "error": "เกิดข้อผิดพลาดในการตรวจสอบตำแหน่ง",
+    })
+    return
+}
+
+
 
 	// สร้างข้อมูล RoomLayout
 	roomLayout := entity.RoomLayout{

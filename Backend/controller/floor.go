@@ -13,17 +13,39 @@ type (
 )
 	
 
-func GetFloor(c *gin.Context){
-	var floors []Floor
-	results := config.DB().Model(&entity.Floor{}).Find(&floors)
+func GetFloor(c *gin.Context) {
+    buildingName := c.Param("building_name")
+    var results []Floor
 
-	if results.Error != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": results.Error.Error()})
-		return
-	}
+    db := config.DB()
+    query := db.Model(&entity.Floor{}).
+        Select("DISTINCT floors.floor_number AS floor_number").
+        Joins("LEFT JOIN rooms ON rooms.floor_id = floors.id").
+        Joins("LEFT JOIN room_layouts ON room_layouts.room_id = rooms.id").
+        Joins("LEFT JOIN buildings ON room_layouts.building_id = buildings.id")
 
-	c.JSON(http.StatusOK, floors)
+    if buildingName != "" {
+        query = query.Where("buildings.building_name LIKE ?", buildingName)
+    }
+
+    if err := query.Find(&results).Error; err != nil {
+        c.JSON(http.StatusBadRequest, gin.H{
+            "error": err.Error(),
+        })
+        return
+    }
+
+     // ตรวจสอบว่ามีข้อมูลหรือไม่
+     if len(results) == 0 {
+        c.JSON(http.StatusNotFound, gin.H{
+            "error": "อาคารนี้ยังไม่มีชั้นในอาคาร",
+        })
+        return
+    }
+
+    c.JSON(http.StatusOK, results)
 }
+
 
 func AddFloor(c *gin.Context) {
     floorNumberInput := c.Param("floor_number")

@@ -1,14 +1,12 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Room from "./page/ManageRoom/RoomLayout";
+import { BrowserRouter as Router } from "react-router-dom";
+import ConfigRoutes from "./routes"; // นำเข้า ConfigRoutes จาก routes/index.tsx
 import "./App.css";
 
 const App: React.FC = () => {
   return (
     <Router>
-      <Routes>
-        <Route path="/" element={<Room />} />
-      </Routes>
+      <ConfigRoutes /> {/* ใช้งานเส้นทางทั้งหมดที่กำหนดใน ConfigRoutes */}
     </Router>
   );
 };

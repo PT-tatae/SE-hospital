@@ -7,8 +7,7 @@ import (
 type PatientRoom struct {
 	gorm.Model
 
-	PatientID uint 
-	Patient Patient `gorm:"foreignKey:PatientID"`
+	PatientID string `json:"patient_id"` 
 
 	RoomID uint
 	Room	Room `gorm:"foreignKey:RoomID"`
