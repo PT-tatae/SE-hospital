@@ -58,8 +58,8 @@ func GetRoomLayout(c *gin.Context) {
             floors.floor_number
         `).
         Joins("INNER JOIN buildings ON floors.building_id = buildings.id").
-        Joins("INNER JOIN floors ON room_layouts.floors_id = floors.id").
-		Joins("INNER JOIN rooms ON room_layouts.rooms_id = rooms.id").
+        Joins("INNER JOIN floors ON room_layouts.floor_id = floors.id").
+		Joins("INNER JOIN rooms ON room_layouts.room_id = rooms.id").
         Joins("INNER JOIN room_types ON rooms.room_type_id = room_types.id")
         
 
@@ -153,7 +153,7 @@ func AddRoom(c *gin.Context) {
 // ตรวจสอบว่ามีข้อมูลในตำแหน่งที่ต้องการอยู่แล้วหรือไม่
 var existingRoomLayout entity.RoomLayout
 if err := tx.Joins("JOIN rooms ON rooms.id = room_layouts.room_id").
-    Where("room_layouts.building_id = ? AND rooms.floor_id = ? AND room_layouts.position_x = ? AND room_layouts.position_y = ?",
+    Where("room_layouts.building_id = ? AND room_layouts.floor_id = ? AND room_layouts.position_x = ? AND room_layouts.position_y = ?",
         building.ID, floor.ID, roomData.PositionX, roomData.PositionY).
     First(&existingRoomLayout).Error; err == nil {
     // หากมีข้อมูลในตำแหน่งนี้อยู่แล้ว ให้แสดงข้อความหรือจัดการตามที่ต้องการ

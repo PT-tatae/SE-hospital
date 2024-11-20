@@ -437,12 +437,14 @@ db.Model(&EmployeePharmacy).Association("Diseases").Append(DiseasesPharmacy)
 	BookRoom01 := entity.RoomLayout{
 		BuildingID: buildingA.ID,
 		RoomID: PatientRoom01.ID,
+		FloorID: floor1BA.ID,
 		PositionX: 1,
 		PositionY: 1,
 	}
 	BookRoom02 := entity.RoomLayout{
 		BuildingID: buildingA.ID,
 		RoomID: PatientRoom02.ID,
+		FloorID: floor2BA.ID,
 		PositionX: 1,
 		PositionY: 2,
 	}
