@@ -30,6 +30,8 @@ npm install --save react-router-dom@6.x
 npm install antd --save
 
 npm install axios --save
+
+npm install @ant-design/icons --save
 ~~~
 
 

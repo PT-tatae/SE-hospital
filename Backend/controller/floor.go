@@ -45,7 +45,7 @@ func GetFloor(c *gin.Context) {
         return
     }
 
-    c.JSON(http.StatusOK, results)
+    c.JSON(http.StatusOK, gin.H{"data": results} )
 }
 
 

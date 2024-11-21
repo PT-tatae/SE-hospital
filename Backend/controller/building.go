@@ -23,7 +23,7 @@ func GetBuilding(c * gin.Context){
 		return
 	}
 	
-	c.JSON(http.StatusOK, buildings)
+	c.JSON(http.StatusOK, gin.H{"data": buildings})
 }
 
 func AddBuilding(c *gin.Context) {
