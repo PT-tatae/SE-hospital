@@ -260,7 +260,10 @@ async function GetRoomLayout(buildingName: string, floorNumber: string) {
           return response.json(); // แปลงผลลัพธ์เป็น JSON หากสถานะเป็น 200 OK
         } else {
           console.error("Failed to RoomLayout. Status:", response.status);
-          return false;
+          return response.json().then((data) => ({
+            status: response.status, // เพิ่ม response.status
+            error: data.error || "Unknown error occurred", // ใช้ข้อความ error จาก API หรือข้อความเริ่มต้น
+          }));
         }
       })
       .catch((error) => {
@@ -283,7 +286,10 @@ async function GetFloor(buildingName: string) {
           return response.json(); // แปลงผลลัพธ์เป็น JSON หากสถานะเป็น 200 OK
         } else {
           console.error("Failed to floor. Status:", response.status);
-          return false;
+          return response.json().then((data) => ({
+            status: response.status, // เพิ่ม response.status
+            error: data.error || "Unknown error occurred", // ใช้ข้อความ error จาก API หรือข้อความเริ่มต้น
+          }));
         }
       })
       .catch((error) => {
@@ -305,7 +311,10 @@ async function GetBuilding() {
           return response.json(); // แปลงผลลัพธ์เป็น JSON หากสถานะเป็น 200 OK
         } else {
           console.error("Failed to building. Status:", response.status);
-          return false;
+          return response.json().then((data) => ({
+            status: response.status, // เพิ่ม response.status
+            error: data.error || "Unknown error occurred", // ใช้ข้อความ error จาก API หรือข้อความเริ่มต้น
+          }));
         }
       })
       .catch((error) => {

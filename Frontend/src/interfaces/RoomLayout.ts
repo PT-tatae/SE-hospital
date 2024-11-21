@@ -4,9 +4,6 @@ export interface RoomLayoutInterface {
     room_name: string;
     position_x: number;
     position_y: number;
-    book_room_id: number; // Add this field
-    building_name: string; // Add this field
-    status: string; // Add this field
 }
 
 

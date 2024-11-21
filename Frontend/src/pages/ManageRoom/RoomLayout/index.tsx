@@ -9,53 +9,68 @@ import { RoomLayoutInterface } from "../../../interfaces/RoomLayout";
 import { FloorInterFace } from "../../../interfaces/Floor";
 import { BuildingInterFace } from "../../../interfaces/Building";
 
-
 const { Header, Content } = Layout;
 const { Option } = Select;
 
 const ManageRoom: React.FC = () => {
   const [Floor, setFloor] = useState<FloorInterFace[]>([]);
-  const [closeOption,setCloseOption] = useState(true);
+  const [closeOption, setCloseOption] = useState<boolean>(true);
   const [Building, setBuilding] = useState<BuildingInterFace[]>([]);
 
   const [roomLayout, setRoomLayout] = useState<RoomLayout>([]);
-  const [DataApiRoomLayout, setDataApiRoomLayout] = useState<RoomLayoutInterface[]>([]);
+  const [DataApiRoomLayout, setDataApiRoomLayout] = useState<
+    RoomLayoutInterface[] 
+  >([]);
 
-
-  const [buildingName, setBuildingName] = useState<string>(""); // เก็บชื่ออาคาร
+  const [buildingName, setBuildingName] = useState<string | null>(null); // เก็บชื่ออาคาร
+  const [floorNumber, setFloorNumber] = useState<string | null>(null); // เก็บหมายเลขชั้น
 
   useEffect(() => {
-    const width = Math.max(...DataApiRoomLayout.map((room) => room?.position_x ?? 0)) + 1;
-    const height = Math.max(...DataApiRoomLayout.map((room) => room?.position_y ?? 0)) + 1;
-    
+    const width = Math.max(
+      ...DataApiRoomLayout.map((room) => room?.position_x ?? 0)
+    );
+    console.log("width", width);
+
+    const height = Math.max(
+      ...DataApiRoomLayout.map((room) => room?.position_y ?? 0)
+    );
+    console.log("height", height);
     // สร้าง layout 2 มิติ
-    const layout = Array.from({ length: height }, () => Array(width).fill(null));
-    
+    const layout = Array.from({ length: height + 1 }, () =>
+      Array(width + 1).fill(null)
+    );
+    console.log("layout", layout);
+
     DataApiRoomLayout.forEach((room) => {
       if (room?.position_x !== undefined && room?.position_y !== undefined) {
         layout[room.position_y][room.position_x] = {
-          book_room_id: room.room_layout_id,
+          room_number: room.room_number,
+          block_room_id: room.room_layout_id,
           room_name: room.room_name,
-          status: room.position_x % 2 === 0 ? "available" : "occupied",
         };
       }
     });
-  
+
     setRoomLayout(layout);
   }, [DataApiRoomLayout]);
 
-  const fetchRoomsByFloor = async (
+  console.log("roomLayout", roomLayout);
+
+  const fetchRoomsLayout = async (
     buildingName: string,
-    floorNumber: string,
+    floorNumber: string
   ) => {
     try {
       const response = await GetRoomLayout(buildingName, floorNumber);
-      console.log("GetRoomLayout",response);
-      
+      console.log("GetRoomLayout", response);
+
       if (response && response.data && Array.isArray(response.data)) {
         setDataApiRoomLayout(response.data); // Access response.data
-        console.log("roomLayout", response.data);
-      } else {
+        console.log("DataApiRoomLayout", response.data);
+      } else if (response && response.error) {
+        // ใช้ข้อความ error ที่ส่งมาจาก API
+        message.error(response.error);
+      }else {
         message.error("ไม่สามารถดึงข้อมูลห้องได้");
       }
     } catch (error) {
@@ -64,20 +79,20 @@ const ManageRoom: React.FC = () => {
     }
   };
 
-
-  
-
   const addlayoutRoom = () => {
     console.log("clik");
   };
 
-  const fetchFloorData = async (value:string) => {
+  const fetchFloorData = async (value: string) => {
     try {
       const response = await GetFloor(value); // เรียกใช้ GetFloor เพื่อดึงข้อมูล
       if (response && response.data) {
         setFloor(response.data); // อัปเดตข้อมูล floor ใน state
         console.log("response-Floor", response.data); // ตรวจสอบข้อมูลที่ได้
-      } else {
+      } else if (response && response.error) {
+        // ใช้ข้อความ error ที่ส่งมาจาก API
+        message.error(response.error);
+      }else {
         message.error("ไม่สามารถดึงข้อมูลชั้นได้");
       }
     } catch (error) {
@@ -91,7 +106,10 @@ const ManageRoom: React.FC = () => {
       if (Array.isArray(response.data) && response.data.length > 0) {
         setBuilding(response.data);
         console.log("Building", response.data);
-      } else {
+      } else if (response && response.error) {
+        // ใช้ข้อความ error ที่ส่งมาจาก API
+        message.error(response.error);
+      }else {
         message.error("ไม่สามารถดึงข้อมูลอาคารได้");
       }
     } catch (error) {
@@ -105,20 +123,18 @@ const ManageRoom: React.FC = () => {
     //fetchRoomsByFloor("อาคาร A","1");
   }, []);
 
-  const handleChangeOptionBuilding =(value: string) =>{
+  const handleChangeOptionBuilding = (value: string) => {
+    setRoomLayout([]);
     setBuildingName(value); // อัปเดตชื่ออาคาร
-    setCloseOption(false)
+    setCloseOption(false);
     fetchFloorData(value);
-  }
+  };
+
   const handleChangeOptionFloor = (value: string) => {
-    console.log("handleChangeOptionFloor-value",value);
-    
-    console.log(" handlebuildingName",buildingName);
-    console.log(" handlefloorNumber",value);
-    
-    
+    setFloorNumber(value);
+
     if (buildingName && value) {
-      fetchRoomsByFloor(buildingName, value); // ถ้ามีทั้งอาคารและชั้น เรียกข้อมูลห้อง
+      fetchRoomsLayout(buildingName, value); // ถ้ามีทั้งอาคารและชั้น เรียกข้อมูลห้อง
     }
   };
 
@@ -140,9 +156,23 @@ const ManageRoom: React.FC = () => {
               <Select
                 placeholder="เลือกชั้น"
                 style={{ width: 120 }}
-                onChange={handleChangeOptionFloor}
+                value={floorNumber || null} // ควบคุมค่า state
+                onChange={(value) => {
+                  if (value === "clear") {
+                    setFloorNumber(null); // ล้างค่า state
+                  } else {
+                    handleChangeOptionFloor(value); // อัปเดต state และเรียกฟังก์ชัน
+                    setFloorNumber(value);
+                  }
+                }}
                 disabled={closeOption}
               >
+                <Option
+                  value="clear"
+                  style={{ color: "red", fontWeight: "bold" }}
+                >
+                  ล้างการเลือก
+                </Option>
                 {Floor && Floor.length > 0 ? (
                   Floor.map((Floor, index) => (
                     <Option key={index} value={Floor.floor_number}>
@@ -158,8 +188,24 @@ const ManageRoom: React.FC = () => {
               <Select
                 placeholder="เลือกอาคาร"
                 style={{ width: 140 }}
-                onChange={handleChangeOptionBuilding}
+                value={buildingName || null} // ควบคุมค่า state
+                onChange={(value) => {
+                  if (value === "clear") {
+                    setBuildingName(null); // ล้างค่า state
+                    setCloseOption(true);
+                  } else {
+                    setFloorNumber(null); // ล้างค่า state
+                    handleChangeOptionBuilding(value); // อัปเดต state และเรียกฟังก์ชัน
+                    setBuildingName(value);
+                  }
+                }}
               >
+                <Option
+                  value="clear"
+                  style={{ color: "red", fontWeight: "bold" }}
+                >
+                  ล้างการเลือก
+                </Option>
                 {Building && Building.length > 0 ? (
                   Building.map((building, index) => (
                     <Option key={index} value={building.building_name}>
@@ -182,7 +228,39 @@ const ManageRoom: React.FC = () => {
             </div>
           </div>
 
-          <div className="content-block2"></div>
+          <div className="content-block2">
+            <div className="box-room">
+              {roomLayout.map((row, rowIndex) => (
+                <div
+                  key={rowIndex}
+                  style={{ display: "flex"}}
+                >
+                  {row.map((room, colIndex) => (
+                    <div
+                      key={colIndex}
+                      style={{ width: "140px", height: "140px",textAlign:"center",margin:"10px" }}
+                    >
+                      {room ? (
+                        <div className="box-data-room">
+                          <p style={{fontSize:"24px",margin:"10px"}}>{room.room_number} </p>
+                          <p style={{fontSize:"16px",margin:"10px"}}>ประเภทห้อง</p>
+                          <p style={{fontSize:"24px",margin:"10px"}}>{room.room_name}</p>     
+                        </div>
+                      ) : (
+                        <div
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            backgroundColor: "transparent",
+                          }}
+                        ></div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
+          </div>
         </Content>
       </Layout>
     </div>

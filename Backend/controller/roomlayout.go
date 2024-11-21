@@ -50,12 +50,10 @@ func GetRoomLayout(c *gin.Context) {
     query := db.Model(&entity.RoomLayout{}).
         Select(`
             room_layouts.id AS room_layout_id,
-            buildings.building_name,
             rooms.room_number,
             room_types.room_name,
             room_layouts.position_x,
-            room_layouts.position_y,
-            floors.floor_number
+            room_layouts.position_y
         `).
         Joins("INNER JOIN buildings ON floors.building_id = buildings.id").
         Joins("INNER JOIN floors ON room_layouts.floor_id = floors.id").
