@@ -3,7 +3,8 @@ import { RouteObject } from "react-router-dom";
 import Loadable from "../components/Loadable/Loadable";
 import FullLayout from "../layouts/FullLayout";
 
-const ManageRoom = Loadable(lazy(() => import("../pages/counter/Counter1")));
+const ManageRoom = Loadable(lazy(() => import("../pages/ManageRoom/RoomLayout/index")));
+const CreateRoom = Loadable(lazy(() => import("../pages/ManageRoom/CreateRoomLayout/index")));
 const Counter2 = Loadable(lazy(() => import("../pages/counter/Counter2")));
 
 const CounterRoutes = (): RouteObject[] => {
@@ -13,12 +14,14 @@ const CounterRoutes = (): RouteObject[] => {
       element: <FullLayout />,
       children: [
         {
-          path: "/counter",
-          element: <ManageRoom />,
-        },
-        {
           path: "/ManageRoom",
           element: <ManageRoom />,
+          children:[
+            {
+              path :"/ManageRoom/Create",
+              element: <CreateRoom/>
+            }
+          ]
         },
         {
           path: "/counter2",

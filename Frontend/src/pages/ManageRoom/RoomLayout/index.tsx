@@ -1,18 +1,20 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState,  } from "react";
 import { Layout, message, Select, Button, Input } from "antd";
 import { FilterOutlined, SearchOutlined } from "@ant-design/icons";
 import { RoomLayout } from "../../../interfaces/RoomLayout";
 import "./room.css";
-
 import { GetFloor, GetRoomLayout, GetBuilding } from "../../../services/https";
 import { RoomLayoutInterface } from "../../../interfaces/RoomLayout";
 import { FloorInterFace } from "../../../interfaces/Floor";
 import { BuildingInterFace } from "../../../interfaces/Building";
 
+import { useNavigate } from 'react-router-dom';
+
 const { Header, Content } = Layout;
 const { Option } = Select;
 
 const ManageRoom: React.FC = () => {
+  const navigate = useNavigate(); 
   const [Floor, setFloor] = useState<FloorInterFace[]>([]);
   const [closeOption, setCloseOption] = useState<boolean>(true);
   const [Building, setBuilding] = useState<BuildingInterFace[]>([]);
@@ -80,7 +82,7 @@ const ManageRoom: React.FC = () => {
   };
 
   const addlayoutRoom = () => {
-    console.log("clik");
+    navigate('/ManageRoom/Create');
   };
 
   const fetchFloorData = async (value: string) => {
@@ -221,10 +223,10 @@ const ManageRoom: React.FC = () => {
             </div>
 
             <div className="block-button">
-              <Button danger onClick={addlayoutRoom}>
+              <Button danger>
                 แก้ไขแผนผังห้อง
               </Button>
-              <Button type="primary">เพื่มแผนผังห้อง</Button>
+              <Button type="primary"  onClick={addlayoutRoom} >เพื่มแผนผังห้อง</Button>
             </div>
           </div>
 

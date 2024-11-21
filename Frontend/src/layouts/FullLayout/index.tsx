@@ -21,7 +21,10 @@ import NurseSidebar from "../../components/Sider/NurseSidebar";
 import FinanceSidebar from "../../components/Sider/FinanceSidebar";
 import CounterSidebar from "../../components/Sider/CounterSidebar";
 import AdminSidebar from "../../components/Sider/AdminSidebar";
+
+
 import ManageRoom from "../../pages/ManageRoom/RoomLayout";
+import CreateRoomLayout from "../../pages/ManageRoom/CreateRoomLayout";
 
 const { Content } = Layout;
 
@@ -85,8 +88,9 @@ const FullLayout: React.FC = () => {
                 <Route path="/nurse2" element={<Nurse2 />} />
                 <Route path="/finance" element={<Finance1 />} />
                 <Route path="/finance2" element={<Finance2 />} />
-                <Route path="/counter" element={<ManageRoom />} />
+                <Route path="/counter" element={<Counter2 />} />
                 <Route path="/ManageRoom" element={<ManageRoom />} />
+                <Route path="/ManageRoom/Create" element={<CreateRoomLayout />} />
                 <Route path="/counter2" element={<Counter2 />} />
                 <Route path="/admin" element={<Admin1 />} />
                 <Route path="/admin2" element={<Admin2 />} />
