@@ -59,3 +59,12 @@
     min-height: 600px;
     border: 5px solid rgba(0, 0, 0, 0.3);
 }
+
+
+.box-room{
+    padding: 20px;
+    display: flex;
+    justify-content :flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+}
