@@ -119,17 +119,17 @@ const CreateRoomLayout: React.FC = () => {
             {roomLayout.map((row, rowIndex) => (
               <div
                 key={rowIndex}
-                style={{ display: "flex", marginBottom: "10px" }}
+                style={{ display: "flex"}}
               >
                 {row.map((room, colIndex) => (
                   <div
                     key={colIndex}
                     style={{
-                      width: "200px",
-                      height: "200px",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
+                      width: "140px",
+                      height: "140px",
+                      
+                      textAlign: "center",
+                      margin:"10px",
                     }}
                     onClick={() => handleCellClick(rowIndex, colIndex)}
                   >
