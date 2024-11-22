@@ -21,9 +21,7 @@
     align-items: center;
     padding: 0 20px;
 }
-.content-create-room{
-    
-}
+
 .content-block1{
     height: 100px;
     display: flex;
@@ -56,7 +54,7 @@
     border-radius: 10px 10px 10px 10px;
     overflow-x: auto;
     overflow-y: auto;
-    min-height: 600px;
+    max-height: 60vh;
     border: 5px solid rgba(0, 0, 0, 0.3);
 }
 
@@ -67,4 +65,15 @@
     justify-content :flex-start;
     align-items: flex-start;
     flex-direction: column;
+}
+
+.box-data-room{
+    border-radius: 20px ;
+    width: 140px;
+    height: 140px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    background: var(--color1);
+    align-items: center;
+    justify-items: center;
 }
