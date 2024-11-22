@@ -14,6 +14,10 @@ const CounterRoutes = (): RouteObject[] => {
       element: <FullLayout />,
       children: [
         {
+          path:"/counter",
+          element: <Counter2 />,
+        },
+        {
           path: "/ManageRoom",
           element: <ManageRoom />,
           children:[
