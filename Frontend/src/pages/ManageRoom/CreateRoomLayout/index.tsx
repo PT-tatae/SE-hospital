@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Layout, message, Select, Button, Input } from "antd";
+import { Layout, message, Select, Button, Input, Modal } from "antd";
 import { GetFloor, GetRoomLayout, GetBuilding } from "../../../services/https";
 import { RoomLayoutInterface } from "../../../interfaces/RoomLayout";
 import { FloorInterFace } from "../../../interfaces/Floor";
@@ -16,6 +16,9 @@ const CreateRoomLayout: React.FC = () => {
   const [SizeArrayX, setSizeArrayX] = useState<number>(1);
   const [SizeArrayY, setSizeArrayY] = useState<number>(1);
   const [roomLayout, setRoomLayout] = useState<RoomLayout>([]);
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+  const [arrayXBoxRoom,setArrayXBoxRoom] = useState<number>(0);
+  const [arrayYBoxRoom,setArrayYBoxRoom] = useState<number>(0);
 
   const creatRoom = (x: number, y: number, newRoomName: string) => {
     console.log("position_x", x);
@@ -49,24 +52,30 @@ const CreateRoomLayout: React.FC = () => {
 
   // ฟังก์ชันจัดการเมื่อคลิก div
   const handleCellClick = (rowIndex: number, colIndex: number) => {
-    const targetRoom = roomLayout[rowIndex][colIndex];
+    setArrayXBoxRoom(colIndex);
+    setArrayYBoxRoom(rowIndex);
+    setIsModalVisible(true);
+    
+  };
+  const handleOK = () =>{
+    const targetRoom = roomLayout[arrayYBoxRoom][arrayXBoxRoom];
 
     if (!targetRoom.room_name) {
       const newRoomName = prompt("Enter a name for this room:");
 
       if (newRoomName) {
         const updatedLayout = [...roomLayout];
-        updatedLayout[rowIndex][colIndex] = {
+        updatedLayout[arrayYBoxRoom][arrayXBoxRoom] = {
           ...targetRoom,
           room_name: newRoomName,
         };
         setRoomLayout(updatedLayout);
-        creatRoom(rowIndex, colIndex, newRoomName);
+        creatRoom(arrayYBoxRoom, arrayXBoxRoom, newRoomName);
       }
     } else {
       alert(`This room is already named: ${targetRoom.room_name}`);
     }
-  };
+  }
 
   return (
     <Layout className="layout-create-room">
@@ -142,8 +151,23 @@ const CreateRoomLayout: React.FC = () => {
             ))}
           </div>
         </div>
+        <Modal
+        title="ตั้งค่าห้อง"
+        visible={isModalVisible}
+        onOk={() => {
+          handleOK();
+          setIsModalVisible(false);
+        }}
+        onCancel={() => setIsModalVisible(false)}
+        >
+          <p>แก้ไขชื่อห้อง: {roomLayout[arrayYBoxRoom]?.[arrayXBoxRoom]?.room_name || "ว่าง"}</p>
+          <p>ตำแหน่ง: X = {arrayXBoxRoom + 1}, Y = {arrayYBoxRoom + 1}</p>
+
+        </Modal>
       </Content>
     </Layout>
+    
   );
 };
 export default CreateRoomLayout;
+
