@@ -20,6 +20,8 @@ const CreateRoomLayout: React.FC = () => {
   const [arrayXBoxRoom,setArrayXBoxRoom] = useState<number>(0);
   const [arrayYBoxRoom,setArrayYBoxRoom] = useState<number>(0);
 
+  
+
   const creatRoom = (x: number, y: number, newRoomName: string) => {
     console.log("position_x", x);
     console.log("position_y", y);
